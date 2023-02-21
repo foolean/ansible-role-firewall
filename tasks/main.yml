@@ -1,0 +1,39 @@
+# Copyright (c) 2023, Bennett Samowich <bennett@foolean.org>
+# All rights reserved
+# SPDX short identifier: BSD-3-Clause
+---
+
+- name: Role foolean/firewall
+  block:
+    - name: CIS | Ensure firewalld is installed
+      become: true
+      ansible.builtin.package:
+        name:
+          - 'firewalld'
+          - 'iptables'
+          - 'nftables'
+        state: present
+
+    - name: CIS | Ensure iptables-services not installed with firewalld
+      become: true
+      ansible.builtin.package:
+        name:
+          - 'iptables-services'
+        state: absent
+
+    - name: CIS | Ensure nftables either not installed or masked with firewalld
+      become: true
+      ansible.builtin.systemd:
+        name: 'nftables'
+        masked: true
+
+    - name: CIS | Ensure firewalld service enabled and running
+      become: true
+      ansible.builtin.systemd:
+        name: 'firewalld'
+        masked: false
+        enabled: true
+        state: started
+
+  tags:
+    - 'role_foolean_firewall'
