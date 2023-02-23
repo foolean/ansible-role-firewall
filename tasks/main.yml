@@ -3,8 +3,12 @@
 # SPDX short identifier: BSD-3-Clause
 ---
 
+# We put the entire role in a block so we can create
+# a role specific tag, which saves the caller from
+# having to do so in their playbook.
 - name: Role foolean/firewall
   block:
+
     - name: CIS | Ensure firewalld is installed
       become: true
       ansible.builtin.package:
@@ -35,5 +39,6 @@
         enabled: true
         state: started
 
+  # Tags to be applied to this role (block)
   tags:
     - 'role_foolean_firewall'
