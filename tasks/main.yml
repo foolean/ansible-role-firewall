@@ -39,6 +39,10 @@
         enabled: true
         state: started
 
+  # This block is only applicable to RedHat based systems
+  when:
+    - ansible_os_family == "RedHat"
+
   # Tags to be applied to this role (block)
   tags:
     - 'role_foolean_firewall'
